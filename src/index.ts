@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import { connectDB } from '../config/db';
+import { connectToDatabase } from '../config/db';
 import typeDefs from './schema';
 import resolvers from './resolvers';
 
@@ -7,7 +7,7 @@ export const createApolloServer = () =>
   new ApolloServer({ typeDefs, resolvers, context: () => ({}) });
 
 const startServer = async () => {
-  await connectDB();
+  await connectToDatabase();
   const server = createApolloServer();
   const { url } = await server.listen({ port: process.env.PORT || 4000 });
   console.log(`Server ready at ${url}`);
