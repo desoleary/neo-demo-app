@@ -1,0 +1,6 @@
+query GetMerchant($id: ID!) {
+  merchant(id: $id) {
+    id
+    name
+  }
+}

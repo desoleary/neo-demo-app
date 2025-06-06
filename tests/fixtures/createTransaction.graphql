@@ -1,0 +1,7 @@
+mutation CreateTransaction($accountId: ID!, $merchantId: ID!, $amount: Float!) {
+  createTransaction(accountId: $accountId, merchantId: $merchantId, amount: $amount) {
+    id
+    amount
+    rewardsEarned
+  }
+}
