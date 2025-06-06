@@ -10,3 +10,11 @@ docker-compose up -d
 npm run seed # populate the database schema & data
 npm run dev
 ```
+
+### Environment files
+
+- `.env` - default development settings
+- `.env.test` - used when running tests
+- `.env.production` - example file for production deployments
+
+The database connection string is selected automatically based on `NODE_ENV`.

@@ -1,23 +1,26 @@
-import { beforeAll, afterAll, afterEach } from 'vitest';
+import { beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import dotenv from 'dotenv';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { createApolloServer } from '../src/index';
-import { connectDB } from '../config/db';
+import { connectToDatabase } from '../config/db';
 import User from '../src/models/User';
 import Account from '../src/models/Account';
 import Merchant from '../src/models/Merchant';
 import RewardCampaign from '../src/models/RewardCampaign';
 import Transaction from '../src/models/Transaction';
 
-dotenv.config({ path: '.env.test' });
+process.env.NODE_ENV = 'test';
 
 let request: supertest.SuperTest<supertest.Test>;
 let apollo: ReturnType<typeof createApolloServer>;
 let httpServer: any;
+let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {
-  await connectDB();
+  mongoServer = await MongoMemoryServer.create();
+  process.env.MONGODB_URI_TEST = mongoServer.getUri();
+  await connectToDatabase();
   apollo = createApolloServer();
   const info = await apollo.listen({ port: 0 });
   httpServer = info.server;
@@ -28,9 +31,10 @@ afterAll(async () => {
   await apollo.stop();
   await mongoose.connection.close();
   await httpServer.close();
+  await mongoServer.stop();
 });
 
-afterEach(async () => {
+const clearDatabase = async () => {
   await Promise.all([
     User.deleteMany({}),
     Account.deleteMany({}),
@@ -38,6 +42,14 @@ afterEach(async () => {
     RewardCampaign.deleteMany({}),
     Transaction.deleteMany({}),
   ]);
+};
+
+beforeEach(async () => {
+  await clearDatabase();
+});
+
+afterEach(async () => {
+  await clearDatabase();
 });
 
 export { request };
