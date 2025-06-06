@@ -1,0 +1,9 @@
+mutation CreateAccount($userId: ID!, $balance: Float) {
+  createAccount(userId: $userId, balance: $balance) {
+    id
+    balance
+    user {
+      id
+    }
+  }
+}

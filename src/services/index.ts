@@ -1,2 +1,1 @@
-// Service layer for business logic - placeholders
-export default {};
+export * from './rewardService';

@@ -42,11 +42,24 @@ const typeDefs = gql`
   }
 
   type Query {
-    _empty: String
+    users: [User!]!
+    user(id: ID!): User
+    accounts: [Account!]!
+    account(id: ID!): Account
+    merchants: [Merchant!]!
+    merchant(id: ID!): Merchant
+    rewardCampaigns: [RewardCampaign!]!
+    rewardCampaign(id: ID!): RewardCampaign
+    transactions: [Transaction!]!
+    transaction(id: ID!): Transaction
   }
 
   type Mutation {
-    _empty: String
+    createUser(name: String!, email: String!, preferences: JSON): User!
+    createAccount(userId: ID!, balance: Float): Account!
+    createMerchant(name: String!): Merchant!
+    createRewardCampaign(name: String!, rewardRate: Float!): RewardCampaign!
+    createTransaction(accountId: ID!, merchantId: ID!, amount: Float!): Transaction!
   }
 `;
 

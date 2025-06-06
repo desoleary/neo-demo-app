@@ -1,0 +1,7 @@
+mutation CreateRewardCampaign($name: String!, $rewardRate: Float!) {
+  createRewardCampaign(name: $name, rewardRate: $rewardRate) {
+    id
+    name
+    rewardRate
+  }
+}
